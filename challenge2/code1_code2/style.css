@@ -1,0 +1,134 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400&display=swap");
+
+body {
+  margin: 0px;
+  padding: 0px;
+}
+div#container {
+  min-height: 100vh;
+  max-width: 100vw;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-image: url("https://cdn-p.smehost.net/sites/e8622626f9584d40b1a8fce8dfa6f567/wp-content/uploads/2023/10/BRUCE_TOUR_1976-x-1127_header.v2.jpg");
+  justify-content: center;
+  align-items: center;
+}
+h2.joli {
+  width: 40vw;
+  border-radius: 45px;
+  background-color: brown;
+  color: antiquewhite;
+}
+.joli {
+  background-color: white;
+  color: black;
+  font-family: "Oswald", sans-serif;
+  font-size: 2rem;
+  padding: 2%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+  text-align: center;
+}
+.joli > div > p:nth-of-type(2) {
+  color: rgb(69, 69, 77);
+  font-size: 1.3rem;
+}
+
+div.joli {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 40vw;
+  border-radius: 25px;
+}
+div.buttons{
+  margin-top: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 30px;
+}
+button {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 1rem;
+  font-family:'Oswald', sans-serif ;
+  font-weight: 400;
+  padding: 10px;
+  border: none;
+  border-radius: 25px;
+  min-width: 10vw;
+  cursor: pointer;
+ 
+}
+
+.parent {
+  margin-top: 5%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
+  padding: 30px;
+  
+  
+  }
+.album{
+  box-sizing: border-box;
+  width: 35vw;
+  aspect-ratio: 2 / 1;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+  padding: 2%;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family:'Oswald', sans-serif ;
+  
+  
+}
+
+
+.div1 {
+  grid-area: 1 / 1 / 2 / 2;
+ 
+}
+.div2 {
+  grid-area: 1 / 2 / 2 / 3;
+  
+}
+.div3 {
+  grid-area: 2 / 1 / 3 / 2;
+  
+}
+.div4 {
+  grid-area: 2 / 2 / 3 / 3;
+  
+}
+.div5 {
+  grid-area: 3 / 1 / 4 / 2;
+  
+}
+
+
+div.parent p:first-child {
+ color:brown;
+ font-weight: 700;
+ font-size: 25px;
+
+}
+div.parent p:nth-child(2){
+  
+  font-size: 2px;
+ 
+ }
+div.parent p:last-child {
+  color:#4CAF50;
+  font-weight: 700;
+  font-size: 20px;
+ 
+ }
+
