@@ -1,22 +1,7 @@
 "use strict";
 // Le système doit pouvoir créer des sondages à partir d’objets prenant la forme ci-dessous, c’est à dire un objet avec une propriété question et une propriété options contenant un tableau avec les différentes réponses possibles.
 
-const languagePrompt = {
-  question: "What is your favorite programming language",
-  options: [
-    "1. JavaScript",
-    "2. PHP",
-    "3. Java",
-    "4. Assembly",
-    "5. Rust",
-    "6. TypeScript",
-  ],
-};
 
-const coursePrompt = {
-  question: "Ce challenge est-il difficile?",
-  options: ["Oui", "Non"],
-};
 
 // Créer des objects pour les sondages
 const surveySubject = (question, tabOptions) => {
@@ -54,7 +39,7 @@ const newSurvey = (surveyTopic) => {
 
   const vote = (optionNumber) => {
     //petit controle de l'input 'optionNumber'
-    if (optionNumber < 1 || optionNumber > surveyTopic.options.length) {
+    if (typeof optionNumber !== 'number' || optionNumber < 1 || optionNumber > surveyTopic.options.length) {
       console.log("Option invalide");
       return results;
     }
