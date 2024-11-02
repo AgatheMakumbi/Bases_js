@@ -51,6 +51,7 @@ const matchUser = (username, pin) => {
   }
 };
 
+
 const message = (text, error) => {
   // error c'est true ou false
   labelWelcome.textContent = text;
@@ -70,6 +71,9 @@ const displayAccount = (acc) => {
 const displayBalance = (acc) => {
   const balance = acc.movements.reduce((total, mov) => total + mov, 0);
   labelBalance.textContent = new Intl.NumberFormat("en-CH").format(balance);
+  if (!acc.balance || acc.balance !== balance) {
+    acc.balance = balance;
+  }
 };
 
 const displaySumIn = (acc) => {
@@ -83,71 +87,70 @@ const displaySumOut = (acc) => {
   const sumOut = sumNeg.reduce((total, mov) => total + mov, 0);
   labelSumOut.textContent = new Intl.NumberFormat("en-CH").format(sumOut);
 };
-const cleanTemplate = () => { 
-  if(containerMovements.hasChildNodes()){
-    while(containerMovements.hasChildNodes()){
+const cleanTemplate = () => {
+  if (containerMovements.hasChildNodes()) {
+    while (containerMovements.hasChildNodes()) {
       containerMovements.removeChild(containerMovements.firstChild);
     }
   }
 };
-displayMouvements = (acc)=>{
+
+displayMouvements = (acc) => {
   // Effacer les transition template
-    cleanTemplate();
+  cleanTemplate();
 
   // Afficher les mouvements
-  let deposit =0;
-  let withdraw =0;
+  let deposit = 0;
+  let withdraw = 0;
   acc.movements.forEach((mov) => {
-    if (mov>0) {
-      deposit++
+    if (mov > 0) {
+      deposit++;
       //div
       const depositElement = document.createElement("div");
-      depositElement.classList.add('movements__row');
+      depositElement.classList.add("movements__row");
       //deposit text
-      const depositType = document.createElement('div');
-      depositType.classList.add('movements__type');
-      depositType.classList.add('movements__type--deposit');
+      const depositType = document.createElement("div");
+      depositType.classList.add("movements__type");
+      depositType.classList.add("movements__type--deposit");
       depositType.textContent = `${deposit} DEPOSIT`;
       //mouvement value
-      const depositValue = document.createElement('div');
-      depositValue.classList.add('movements__value');
-      depositValue.textContent = ` CHF ${ new Intl.NumberFormat("en-CH").format(mov)}`;
-    
+      const depositValue = document.createElement("div");
+      depositValue.classList.add("movements__value");
+      depositValue.textContent = ` CHF ${new Intl.NumberFormat("en-CH").format(
+        mov
+      )}`;
+
       //regroupement
       depositElement.appendChild(depositType);
       depositElement.appendChild(depositValue);
 
       //affichage
       containerMovements.appendChild(depositElement);
-      console.log(depositElement);  
-      
-    }else{
-      withdraw++
+    } else {
+      withdraw++;
       //div
-      const   withdrawElement = document.createElement("div");
-      withdrawElement.classList.add('movements__row');
+      const withdrawElement = document.createElement("div");
+      withdrawElement.classList.add("movements__row");
       //deposit text
-      const   withdrawType = document.createElement('div');
-      withdrawType.classList.add('movements__type');
-      withdrawType.classList.add('movements__type--withdrawal');
+      const withdrawType = document.createElement("div");
+      withdrawType.classList.add("movements__type");
+      withdrawType.classList.add("movements__type--withdrawal");
       withdrawType.textContent = `${withdraw} WITHDRAWAL`;
       //mouvement value
-      const   withdrawValue = document.createElement('div');
-      withdrawValue.classList.add('movements__value');
-      withdrawValue.textContent = ` CHF ${ new Intl.NumberFormat("en-CH").format(mov)}`;
-     
-    
+      const withdrawValue = document.createElement("div");
+      withdrawValue.classList.add("movements__value");
+      withdrawValue.textContent = ` CHF ${new Intl.NumberFormat("en-CH").format(
+        mov
+      )}`;
+
       //regroupement
-      withdrawElement.appendChild( withdrawType);
-      withdrawElement.appendChild( withdrawValue);
+      withdrawElement.appendChild(withdrawType);
+      withdrawElement.appendChild(withdrawValue);
 
       //affichage
-      containerMovements.appendChild( withdrawElement);
-      console.log(withdrawElement);
-
-    };
+      containerMovements.appendChild(withdrawElement);
+    }
   });
-
 };
 
 displayAccountInfo = (acc) => {
@@ -171,11 +174,57 @@ btnLogin.addEventListener("click", function (e) {
 
     //État général du compte
     displayAccountInfo(currentAccount);
-    
-    // générez une liste basée sur le tableau movements 
+
+    // générez une liste basée sur le tableau movements
     displayMouvements(currentAccount);
   } catch (err) {
     // attrape message d'erreur
+    message(err.message, true);
+  }
+});
+const transfer = (acc, recipientName, sendAmount) => {
+  //Le compte de destination doit exister (utilisez la propriété username)
+  const recipientAccount = accounts.find(
+    (acc) => recipientName === acc.username
+  );
+  //if (recipientAccount && recipientAccount.username !== currentAccount.username) {
+  console.log(recipientAccount);
+  //Le montant doit être supérieur à 0 et inférieur ou égal à la somme à disposition.
+  let amountOk = sendAmount > 0;
+  let balanceOk = sendAmount <= acc.balance;
+  let recipientOk = recipientAccount !== acc;
+  console.log(sendAmount);
+  if (recipientAccount && amountOk && balanceOk && recipientOk) {
+    //transfert
+    console.log(sendAmount+10)
+    acc.movements.push(-sendAmount);
+    console.log(acc.movements);
+    recipientAccount.movements.push(sendAmount);
+    console.log(recipientAccount.movements);
+    acc.balance -= sendAmount;
+    console.log(acc.balance);
+    recipientAccount.balance += sendAmount;
+    console.log(recipientAccount.balance);
+    displayAccountInfo(acc);
+    displayMouvements(acc);
+    message(`Transfered CHF ${sendAmount} to ${recipientAccount.username}`);
+  }else{
+    throw new Error("Couldn't transfer");
+  }
+};
+
+btnTransfer.addEventListener("click", function (e) {
+  try {
+    e.preventDefault();
+    recipientName = inputTransferTo.value;
+    sendAmount = parseFloat(inputTransferAmount.value);
+    if (currentAccount) {
+      transfer(currentAccount, recipientName, sendAmount);
+    }else{
+      throw new Error("Vous devez être connecté pour effectuer une transaction");
+    }
+    
+  } catch (err) {
     message(err.message, true);
   }
 });
