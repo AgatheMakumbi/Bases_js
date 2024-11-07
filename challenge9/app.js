@@ -23,7 +23,7 @@ const makeGrid = (r, c) => {
 
 const addShapes = (gridSize) => {
   for (let i = 0; i < gridSize * gridSize; i++) {
-    const shape = Math.floor(Math.random() * 3);
+    const shape = Math.floor(Math.random() * 3); // pour les mettre au random
 
     switch (shape) {
       case 0:
@@ -45,3 +45,33 @@ const initGrid = (gridSize) => {
 };
 
 initGrid(Math.floor(Math.random() * 24));
+
+//changement de forme au mouseover 
+document.body.addEventListener("mouseover", (e)=>{
+  e.preventDefault();
+  //console.log(e.target.lastChild.dataset.shape);
+  const currentShape = e.target.lastChild.dataset.shape;
+
+  switch (currentShape) {
+    //Si c’est un cercle, transformez-la en carré
+    case "circle":
+      e.target.innerHTML = " ";
+      e.target.insertAdjacentHTML("afterbegin", square);
+      break;
+
+    //Si c’est un triangle, transformez-la en cercle
+    case "triangle":
+      e.target.innerHTML = " ";
+      e.target.insertAdjacentHTML("afterbegin", circle);
+      break;
+    //Si c’est un carré, transformez-la en triangle.
+    case "square":
+      e.target.innerHTML = " ";
+      e.target.insertAdjacentHTML("afterbegin", triangle);
+      e.target.lastChild.style.fill = '#60b347';
+      break;
+  
+  }
+	
+})
+
