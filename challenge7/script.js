@@ -60,7 +60,7 @@ again.addEventListener('click',function (e) {
     document.body.style.backgroundColor = 'var(--color-primary)';
     scoreValue = 20;
     hint.textContent ='Start guessing...';
-  });
+});
 
 
 
