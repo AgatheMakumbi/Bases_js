@@ -28,8 +28,6 @@ submitDestination.addEventListener('click', () => {
 });
 
 
-
-
 const startStation = document.querySelector('.title h1:first-child');
 const displayDiparture =(departures)=>{
     departures.forEach(element => {
@@ -49,7 +47,6 @@ const displayDiparture =(departures)=>{
         article.append(divTime,divCategory,divDestination);
         document.querySelector('#board').appendChild(article);
 
-      
     });
 };
 
