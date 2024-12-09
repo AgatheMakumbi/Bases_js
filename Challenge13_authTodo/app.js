@@ -1,8 +1,16 @@
+const signUpForm = document.querySelector("form[name='signup']");
+const loginForm = document.querySelector("form[name='login']");
+
+const token= '';
 // **À IMPLEMENTER**
 //Permet de déterminer si un utilisateur est authentifié ou non.
 const isAuthenticated = () => {
 //check s'il a un token ou si token est null
-return true;
+  if (localStorage.getItem('token')!==null) {
+    return true;
+  }else{
+    return false;
+  }
 };
 
 // Affiche un message à l'utilisateur.
@@ -43,24 +51,24 @@ const initEventListeners = () => {
       toggleForm(e.target.id); // Bascule le formulaire actif en fonction de l'onglet cliqué.
     }
     //Event Listener attendant la soumission du formulaire
-    const signUpForm = document.querySelector("form[name='signup']");
+    
     signUpForm.addEventListener("submit", (e)=> {
       //éviter le rechargement de la page 
       e.preventDefault()
 
       // récupérer le FormData 
-      const formData = new FormData(signUpForm);
+      const signupformData = new FormData(signUpForm);
 
       /* enyover une requette POST pour créer un utilisateur, précisant les options:
       method: “POST”
       headers: { "Content-Type": "application/json" }
       body: { “email”: “something@something.ch”, “password”: “password” }
       */ 
-      const createAccountRequest = async () {
+      const createAccountRequest = async () =>{
         try {
         let res = await fetch("https://progweb-todo-api.onrender.com/users", {
           method: "POST",
-          body: JSON.stringify(formData),
+          body: JSON.stringify(signupformData),
           headers: {
             "Content-Type": "application/json",
           }});
@@ -69,7 +77,46 @@ const initEventListeners = () => {
           displayMessage(`${e.message}`);
         }
       };
+      createAccountRequest();
     }).reset();
+
+    loginForm.addEventListener("submit", (e)=> {
+      //éviter le rechargement de la page 
+      e.preventDefault()
+
+      // récupérer le FormData 
+      const loginformData = new FormData(loginForm);
+      
+      /* enyover une requette POST pour login l'utulisateur, précisant les options:
+      method: “POST”
+      headers: { "Content-Type": "application/json" }
+      body: { “email”: “something@something.ch”, “password”: “password” }
+      */ 
+      const loginRequest = async () =>{
+        try {
+        let res = await fetch("https://progweb-todo-api.onrender.com/users/login", {
+          method: "POST",
+          body: JSON.stringify(loginformData),
+          headers: {
+            "Content-Type": "application/json",
+          }});
+        console.log(res);
+        //save token 
+        token = localStorage.setItem('token', `${loginformData.get('token')}`)
+        } catch (e) {
+          displayMessage(`${e.message}`);
+        }
+      };
+      loginRequest();
+      handleInterfaceAuth();
+    }).reset();
+
+    logoutBtn.addEventListener('clcik',(e)=> {
+      //effacer le token du LocalStorage
+      token = '';
+      handleInterfaceAuth();
+    })
+
   });
 };
 
